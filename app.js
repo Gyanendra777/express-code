@@ -2,28 +2,21 @@ const express = require('express')
 var path = require('path');
 const app = express()
 const port = 3000
-
+//express specific stuff
+app.use('/static', express.static('public'))
+//pug specific stuff
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
-
-app.get('/pugw', function (req, res) {
-  res.render('temp', { title: 'express', message: 'fist file creat in express pug' })
+//endpoints
+app.get('/', function (req, res) {
+  const conttont = "helo and pug me hm html usg kr skte h ";
+  const params = {"title":"pug html", "contant": conttont}
+  res.render('temp', params)
 })
 
-app.use('/static', express.static('public'))
 
-app.get('/s', (req, res) => {
-  var a = req.query.name;
-  res.send('Hello World!'+"___"+ a)
-})
 
-app.post('/postt',(req,res)=>{
-  res.status(200).send("hello post request methade")
-})
-app.get('/postt',(req,res)=>{
-  res.send("hello get  request methade")
-})
-
+//start this server
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
