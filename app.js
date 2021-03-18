@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const fs  = require('fs');
 var path = require('path');
 const app = express()
 const port = 3000
@@ -20,7 +21,14 @@ app.get('/', function (req, res) {
 })
 
 app.post('/',  (req, res)=> {
-  console.log(req.body)
+ 
+  name = req.body.name
+  lname = req.body.lname
+  email = req.body.email
+  number = req.body.number
+
+  let outputToWring = `this name==${name}${lname},////email valid==${email},///number valid==${number}`
+  fs.writeFileSync('output.txt',outputToWring)
   const params = {"massage":"complite in forme"}
   res.render('temp', params)
 })
