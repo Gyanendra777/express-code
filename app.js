@@ -26,7 +26,7 @@ app.post('/',  (req, res)=> {
   lname = req.body.lname
   email = req.body.email
   number = req.body.number
-
+//yha pe file ko bnaya jata h our usme data ko save kiya jata h file ka name h output.txt h jsme outputtowring  ke farmet me data ko save kiya jata h 
   let outputToWring = `this name==${name}${lname},////email valid==${email},///number valid==${number}`
   fs.writeFileSync('output.txt',outputToWring)
   const params = {"massage":"complite in forme"}
