@@ -1,10 +1,30 @@
 const express = require('express');
 const fs  = require('fs');
 var path = require('path');
-const app = express()
-const port = 3000
+const app = express();
+const bodyparser = require('body-parser');
+const port = 3000;
+
+//data base ko seve kran our use kran yhi mathade h
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/traniosite', {useNewUrlParser: true, useUnifiedTopology: true});
+const TranioSitesSchema = new mongoose.Schema({
+  name: String,
+  namee: String,
+  lname: String,
+  email: String,
+  number: String,
+});
+const TranioSitesModel = mongoose.model('traniosites', TranioSitesSchema);
+/////////////////////////////////////////////////////////////////////////////////////
+
 
 app.use(express.urlencoded())
+
+//jb hme user se data ko body se json formet me lete h to to use phle deliyar krt h to hm tata ko le sate h line 24
+//is se h postmane tool me hm body ke row (json (application/json)) pe select krte h to kam krta h agr yh nme krte h to body me data kuchh nhi jata h 
+app.use(bodyparser.json())
+
 
 //express specific stuff
 app.use('/static', express.static('public'))
@@ -15,25 +35,56 @@ app.set('views', path.join(__dirname, 'views'));
 
 //endpoints
 app.get('/', function (req, res) {
-  const conttont = "helo and pug me hm html usg kr skte h ";
-  const params = {"title":"pug html", "contant": conttont}
-  res.render('temp', params)
+  const params = {}
+  res.status(200).render('temp.pug',params)
+})
+//data ko kese sennd krte h is post me h jo ke sbse phle hm post mathad de H OUT US E HM SEND KRTE H 
+
+app.post('/', function (req, res) {
+
+//traniositesmodel ke mtlb h ke body se data ko nikal kr bongod be data ko seve krna our 
+  TranioSitesModel.create(req.body)
+//ye mathed h data ko user ko data save hone ke bad mesage dete n ke ap ka data save ho gya h age is nhe va lkhate h to v mongod me data krta he ya keval user ko krta h k data save ho gya he
+  .then(function()
+ //   ye date eval user ke console pr dikhane ke liye hota h 
+ {
+
+  //yha se data ko lete h our data ko output.txt file me save kr data h 
+    console.log(req.body); 
+    namee = req.body.name
+    lname = req.body.lname
+    email = req.body.email
+    number = req.body.number
+  //yha pe file ko bnaya jata h our usme data ko save kiya jata h file ka name h output.txt h jsme outputtowring  ke farmet me data ko save kiya jata h 
+    let outputToWring =
+  `this name = ${namee}_${lname}
+email valid = ${email}
+number valid = ${number}`
+    fs.writeFileSync('output.txt',outputToWring)
+    const params = {"massage":"complite in forme"}
+    res.render('temp', params)
+
+  })
+  })
+app.put('/:id', function (req, res) {
+  res.send({type:'put'});
+  const params = {}
+  res.status(200).render('temp.pug',params)
+})
+app.delete('/:id', function (req, res) {
+  res.send({type:'delete'});
+  const params = {}
+  res.status(200).render('temp.pug',params)
 })
 
-app.post('/',  (req, res)=> {
- 
-  name = req.body.name
-  lname = req.body.lname
-  email = req.body.email
-  number = req.body.number
-//yha pe file ko bnaya jata h our usme data ko save kiya jata h file ka name h output.txt h jsme outputtowring  ke farmet me data ko save kiya jata h 
-  let outputToWring = `this name==${name}${lname},////email valid==${email},///number valid==${number}`
-  fs.writeFileSync('output.txt',outputToWring)
-  const params = {"massage":"complite in forme"}
-  res.render('temp', params)
+app.post('/contact',(req, res)=> {
+ var myData = new contact(req.body);
+ myData.save().then(()=>{
+   res.send('this item has been save to the database')
+ }).catch(()=>{
+   res.send('item was not save ')
+ })
 })
-
-
 
 //start this server
 app.listen(port, () => {
