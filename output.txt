@@ -1,3 +1,3 @@
-this name = Test24_dfrhgdr
-email valid = kalidubey07@gmail.com
-number valid = 2
+this name = undefined_undefined
+email valid = undefined
+number valid = undefined

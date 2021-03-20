@@ -67,14 +67,29 @@ number valid = ${number}`
   })
   })
 app.put('/:id', function (req, res) {
-  res.send({type:'put'});
-  const params = {}
-  res.status(200).render('temp.pug',params)
+   // 71 line me hm data ko jo hm /ke bad likhate h use console log pr dikhhata h 
+  console.log(req.params.id);
+//yha pr hm vo data likhhte h jse hm updata krna mota h mongo db ke id ko kapi kr our kata ko /ke bad lgate h jis se data ja kr mongod me data ko id ke  mach krta h our use update krta h  postmand me hm body me ja kr row me json(application/json)me mb {	"name":"hhhh"} likhhate h our name me chang mo jata h mtlb up data ho jata h 
+  TranioSitesModel.findByIdAndUpdate({_id:req.params.id},req.body).then(function(){
+    TranioSitesModel.findOne({_id:req.params.id},req.body).then(function(data){
+      res.send(data)
+    })
+  })
+  // res.send({type:'put'});
+  // const params = {}
+  // res.status(200).render('temp.pug',params)
 })
 app.delete('/:id', function (req, res) {
-  res.send({type:'delete'});
-  const params = {}
-  res.status(200).render('temp.pug',params)
+  // 76 line me hm data ko jo hm /ke bad likhate h use console log pr dikhhata h 
+  console.log(req.params.id);
+
+  //line 78 pe jo methad likhha h v keval mongod me ja kr data ko delet kr data h eske lia mthade h ke mongo db ke id ko kapi kr our kata ko /ke bad lgate h jis se data ja kr mongod me data ko id ke mam se mach krta h our use delet kr data h our use   then ki mdt se use apne brouger pr so kra lete h jsse pta chlta h ki vhi data delet ho gya h
+  TranioSitesModel.findByIdAndDelete({_id:req.params.id},req.body).then(function(data){
+    res.send(data)
+  })
+  
+  // const params = {}
+  // res.status(200).render('temp.pug',params)
 })
 
 app.post('/contact',(req, res)=> {
