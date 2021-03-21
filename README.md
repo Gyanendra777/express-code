@@ -1,6 +1,9 @@
 # express-code
 https://youtu.be/mgQ1vBZvMes
 
+#express code exmpile
+#https://www.tutorialspoint.com/expressjs/expressjs_environment.htm
+
 api creat in fist
 npm init
 
